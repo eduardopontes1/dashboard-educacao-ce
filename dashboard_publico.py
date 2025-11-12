@@ -60,7 +60,7 @@ gdf_ceara_base = carregar_mapa_ceara(FILE_SHAPEFILE)
 if not contagem_municipio.empty:
     
     # --- ATO 1: O PROBLEMA (DADOS SUSEP) ---
-    st.header("Ato 1: A Realidade da Segurança", divider='red')
+    st.header("A Realidade da Segurança", divider='red')
 
     # KPIs (Cartões) Hard-coded
     kpi1, kpi2, kpi3 = st.columns(3)
@@ -133,8 +133,8 @@ if not contagem_municipio.empty:
             names='Gênero',
             values='Contagem',
             title='Gênero dos Infratores',
-            hole=0.3, # Gráfico de rosca
-            color_discrete_sequence=['#ab3a26', '#ff5330'] # Tons de marrom/laranja
+            hole=0.5, # Gráfico de rosca
+            color_discrete_sequence=['#ab3a26', '#ff5330'] 
         )
         st.plotly_chart(fig_genero, use_container_width=True)
 
@@ -162,13 +162,13 @@ if not contagem_municipio.empty:
             color_continuous_scale="Reds",
             mapbox_style="carto-positron",
             center={"lat": -5.1, "lon": -39.5},
-            zoom=6.5
+            zoom=5
         )
         fig_mapa.update_layout(title="Mapa de Calor: Concentração de Infrações por Município")
         st.plotly_chart(fig_mapa, use_container_width=True)
     
-    # --- ATO 2: A CAUSA RAIZ (DADOS SAEB) ---
-    st.header("Ato 2: A Causa Raiz", divider='blue')
+    # --- A CAUSA RAIZ (DADOS SAEB) ---
+    st.header("A Causa Raiz", divider='blue')
     st.markdown("Se a evasão é o problema, por que os alunos evadem? A análise dos dados do SAEB mostra um claro abismo de desempenho e uma falha em criar perspectiva.")
 
     try:
@@ -184,7 +184,7 @@ if not contagem_municipio.empty:
     """)
 
     # --- ATO 3: A SOLUÇÃO (SEU PROJETO) ---
-    st.header("Ato 3: A Intervenção", divider='green')
+    st.header("A Intervenção", divider='green')
     st.markdown("### Meu projeto ataca a causa raiz, não o sintoma.")
     st.markdown("Proponho uma intervenção-piloto focada em **desempenho, motivação e perspectiva de futuro**.")
 
