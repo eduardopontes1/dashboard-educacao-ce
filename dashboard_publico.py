@@ -134,7 +134,7 @@ if not contagem_municipio.empty:
             values='Contagem',
             title='Gênero dos Infratores',
             hole=0.4, # Gráfico de rosca
-            color_discrete_sequence=['#A63603', '#FD8D3C'] # Tons de marrom/laranja
+            color_discrete_sequence=['#ab3a26', '#ff5330'] # Tons de marrom/laranja
         )
         st.plotly_chart(fig_genero, use_container_width=True)
 
