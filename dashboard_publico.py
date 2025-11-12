@@ -21,7 +21,8 @@ st.set_page_config(
 
 # --- Título do Painel ---
 st.title("Diagnóstico de Risco: Educação e Segurança no Ceará")
-st.markdown("Uma análise de data storytelling para a Bolsa Reitoral de Liderança, baseada em dados agregados da SUSEP e SAEB.")
+# --- ALTERAÇÃO AQUI ---
+st.markdown("Uma análise narrativa baseada em dados para a Bolsa Reitoral de Liderança (SUSEP e SAEB).")
 
 # --- Funções de Carregamento (com cache para velocidade) ---
 @st.cache_data
@@ -70,8 +71,6 @@ if not contagem_municipio.empty:
     st.markdown("A análise dos registros da SUSEP revela que o problema da criminalidade está profundamente ligado à evasão escolar e à juventude.")
 
     # Layout em colunas para os gráficos
-    # --- CORREÇÃO AQUI ---
-    # Agora temos 3 variáveis (col1, col2, col3) para receber as 3 colunas
     col1, col2, col3 = st.columns(3) 
 
     with col1:
@@ -120,11 +119,9 @@ if not contagem_municipio.empty:
         fig_idade.update_layout(xaxis={'categoryorder':'total descending'})
         st.plotly_chart(fig_idade, use_container_width=True)
 
-    # Gráfico de Gênero (Novo)
     with col3:
         st.subheader("Perfil de Gênero")
         
-        # DADOS HARD-CODED (Seguros)
         data_genero = {
             'Gênero': ['Masculino', 'Feminino'],
             'Contagem': [387996, 40417]
@@ -136,7 +133,8 @@ if not contagem_municipio.empty:
             names='Gênero',
             values='Contagem',
             title='Gênero dos Infratores',
-            hole=0.4 # Gráfico de rosca
+            hole=0.4, # Gráfico de rosca
+            color_discrete_sequence=['#A63603', '#FD8D3C'] # Tons de marrom/laranja
         )
         st.plotly_chart(fig_genero, use_container_width=True)
 
@@ -145,7 +143,8 @@ if not contagem_municipio.empty:
     st.header("Onde o Problema se Concentra?")
     
     if gdf_ceara_base is not None:
-        st.markdown("O mapa de calor abaixo mostra a contagem total de infrações por município, revelando os 'hotspots' de criminalidade no estado.")
+        # --- ALTERAÇÃO AQUI ---
+        st.markdown("O mapa de calor abaixo mostra a contagem total de infrações por município, revelando as **áreas de maior concentração** de criminalidade no estado.")
         
         contagem_municipio['Município'] = contagem_municipio['Município'].str.upper().str.strip()
         gdf_ceara_base['Município'] = gdf_ceara_base['Município'].str.upper().str.strip()
