@@ -9,8 +9,7 @@ import os
 warnings.filterwarnings('ignore')
 
 # --- Nomes dos arquivos (Altere aqui se for diferente) ---
-# --- CORREÇÃO AQUI ---
-FILE_MAPA_PUBLICO = "dados_mapa_publico.csv" # Procurando o .csv
+FILE_MAPA_PUBLICO = "dados_mapa_publico.csv" 
 FILE_SHAPEFILE = "CE_Municipios_2022.shp"     
 FILE_SAEB_IMAGE = "grafico_saeb_desempenho.png"
 
@@ -31,8 +30,6 @@ def carregar_dados_mapa(file_path):
         st.error(f"Erro: O arquivo de dados do mapa ('{file_path}') não foi encontrado.")
         return pd.DataFrame()
     try:
-        # --- CORREÇÃO PRINCIPAL AQUI ---
-        # Voltamos a usar pd.read_csv(), pois o arquivo agora é um CSV.
         return pd.read_csv(file_path)
     except Exception as e:
         st.error(f"Erro ao ler o arquivo CSV '{file_path}': {e}")
@@ -73,7 +70,9 @@ if not contagem_municipio.empty:
     st.markdown("A análise dos registros da SUSEP revela que o problema da criminalidade está profundamente ligado à evasão escolar e à juventude.")
 
     # Layout em colunas para os gráficos
-    col1, col2 = st.columns(3) # Mudei para 3 colunas para acomodar o gráfico de gênero
+    # --- CORREÇÃO AQUI ---
+    # Agora temos 3 variáveis (col1, col2, col3) para receber as 3 colunas
+    col1, col2, col3 = st.columns(3) 
 
     with col1:
         st.subheader("Perfil de Escolaridade")
