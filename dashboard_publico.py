@@ -112,7 +112,7 @@ if not contagem_municipio.empty:
         fig_idade = px.bar(
             df_idade_plot,
             x='Faixa Etária', y='Contagem',
-            title='Perfil de Idade dos Infratores (Top 8 Faixas)', text_auto=True,
+            title='Perfil de Idade dos Infratores', text_auto=True,
             color='Faixa Etária',
             color_discrete_map={'18 até 23 anos': '#FF4B4B', '12 até 17 anos': '#FF8C00'}
         )
@@ -133,7 +133,7 @@ if not contagem_municipio.empty:
             names='Gênero',
             values='Contagem',
             title='Gênero dos Infratores',
-            hole=0.5, # Gráfico de rosca
+            hole=0.6, # Gráfico de rosca
             color_discrete_sequence=['#ab3a26', '#ff5330'] 
         )
         st.plotly_chart(fig_genero, use_container_width=True)
@@ -162,7 +162,7 @@ if not contagem_municipio.empty:
             color_continuous_scale="Reds",
             mapbox_style="carto-positron",
             center={"lat": -5.1, "lon": -39.5},
-            zoom=5
+            zoom=5.5
         )
         fig_mapa.update_layout(title="Mapa de Calor: Concentração de Infrações por Município")
         st.plotly_chart(fig_mapa, use_container_width=True)
