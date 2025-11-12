@@ -9,10 +9,10 @@ import os
 warnings.filterwarnings('ignore')
 
 # --- Nomes dos arquivos (Altere aqui se for diferente) ---
-# CORRIGIDO para .xls
-FILE_MAPA_PUBLICO = "dados_mapa_publico.xls" 
-FILE_SHAPEFILE = "CE_Municipios_2022.shp"     # O .shp que você precisa baixar do IBGE
-FILE_SAEB_IMAGE = "grafico_saeb_desempenho.png" # O gráfico que você criou no Jupyter
+# --- CORREÇÃO AQUI ---
+FILE_MAPA_PUBLICO = "dados_mapa_publico.csv" # Procurando o .csv
+FILE_SHAPEFILE = "CE_Municipios_2022.shp"     
+FILE_SAEB_IMAGE = "grafico_saeb_desempenho.png"
 
 # --- Configuração da Página ---
 st.set_page_config(
@@ -32,12 +32,10 @@ def carregar_dados_mapa(file_path):
         return pd.DataFrame()
     try:
         # --- CORREÇÃO PRINCIPAL AQUI ---
-        # Trocado de pd.read_csv para pd.read_excel
-        # Você precisará da biblioteca 'xlrd' para isso (veja o requirements.txt)
-        return pd.read_excel(file_path)
+        # Voltamos a usar pd.read_csv(), pois o arquivo agora é um CSV.
+        return pd.read_csv(file_path)
     except Exception as e:
-        st.error(f"Erro ao ler o arquivo Excel '{file_path}': {e}")
-        st.info("Verifique se o arquivo não está corrompido e se você adicionou 'xlrd' ao requirements.txt")
+        st.error(f"Erro ao ler o arquivo CSV '{file_path}': {e}")
         return pd.DataFrame()
 
 @st.cache_data
@@ -66,7 +64,7 @@ if not contagem_municipio.empty:
     # --- ATO 1: O PROBLEMA (DADOS SUSEP) ---
     st.header("Ato 1: A Realidade da Segurança", divider='red')
 
-    # --- KPIs (Cartões) Hard-coded ---
+    # KPIs (Cartões) Hard-coded
     kpi1, kpi2, kpi3 = st.columns(3)
     kpi1.metric(label="Total de Registros de Infrações (SUSEP 2019-2024)", value="428.414")
     kpi2.metric(label="% Infratores sem Educação Básica", value="65,33%")
@@ -75,12 +73,12 @@ if not contagem_municipio.empty:
     st.markdown("A análise dos registros da SUSEP revela que o problema da criminalidade está profundamente ligado à evasão escolar e à juventude.")
 
     # Layout em colunas para os gráficos
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns(3) # Mudei para 3 colunas para acomodar o gráfico de gênero
 
     with col1:
-        st.subheader("Perfil de Escolaridade dos Infratores")
+        st.subheader("Perfil de Escolaridade")
         
-        # --- DADOS HARD-CODED (Seguros) ---
+        # DADOS HARD-CODED (Seguros)
         data_escolaridade = {
             'Escolaridade': [
                 'Alfabetizado', 'Ensino Fundamental Incompleto', 'Ensino Fundamental Completo',
@@ -101,9 +99,9 @@ if not contagem_municipio.empty:
         st.plotly_chart(fig_escolaridade, use_container_width=True)
 
     with col2:
-        st.subheader("Perfil de Idade dos Infratores")
+        st.subheader("Perfil de Idade")
         
-        # --- DADOS HARD-CODED (Seguros) ---
+        # DADOS HARD-CODED (Seguros)
         data_idade = {
             'Faixa Etária': [
                 '18 até 23 anos', '12 até 17 anos', '24 até 29 anos', '30 até 35 anos',
@@ -123,13 +121,33 @@ if not contagem_municipio.empty:
         fig_idade.update_layout(xaxis={'categoryorder':'total descending'})
         st.plotly_chart(fig_idade, use_container_width=True)
 
+    # Gráfico de Gênero (Novo)
+    with col3:
+        st.subheader("Perfil de Gênero")
+        
+        # DADOS HARD-CODED (Seguros)
+        data_genero = {
+            'Gênero': ['Masculino', 'Feminino'],
+            'Contagem': [387996, 40417]
+        }
+        df_genero_plot = pd.DataFrame(data_genero)
+
+        fig_genero = px.pie(
+            df_genero_plot,
+            names='Gênero',
+            values='Contagem',
+            title='Gênero dos Infratores',
+            hole=0.4 # Gráfico de rosca
+        )
+        st.plotly_chart(fig_genero, use_container_width=True)
+
+
     # --- O Mapa Interativo ---
     st.header("Onde o Problema se Concentra?")
     
     if gdf_ceara_base is not None:
         st.markdown("O mapa de calor abaixo mostra a contagem total de infrações por município, revelando os 'hotspots' de criminalidade no estado.")
         
-        # Normalizar nomes para o 'merge'
         contagem_municipio['Município'] = contagem_municipio['Município'].str.upper().str.strip()
         gdf_ceara_base['Município'] = gdf_ceara_base['Município'].str.upper().str.strip()
         
